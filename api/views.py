@@ -57,12 +57,10 @@ class productDeleteAPIView(APIView):
 		product = get_object_or_404(Product, id=pk)
 
 		if product.created_by != request.user:
-			message = {'message': 'You are not allowed to delete this product.'}
-			return Response(message, status=403)
+			return Response('You are not allowed to delete this product.', status=403)
 		
 		product.delete()
-		message = {'message': 'Item succsesfully deleted!'}
-		return Response(message, status=204)
+		return Response('Item succsesfully deleted!', status=204)
 
 
 class productPurchaseAPIView(APIView):
@@ -72,15 +70,12 @@ class productPurchaseAPIView(APIView):
 		product = get_object_or_404(Product, id=pk)
 
 		if product.created_by == request.user:
-			message = {'message': 'Cannot purchase your own product'}
-			return Response(message)
+			return Response('Cannot purchase your own product')
 		if not product.is_available:
-			message = {'message': 'Product has already been purchased'}
-			return Response(message)
+			return Response('Product has already been purchased')
 		
 		product.purchase(request.user)
-		message = {'message': 'Purchased'}
-		return Response(message)
+		return Response('Purchased')
 
 
 class signupAPIView(APIView):
